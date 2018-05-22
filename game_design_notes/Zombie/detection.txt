@@ -1,0 +1,29 @@
+Goal:
+
+Mob can detect player based on the speed at which the player moves.
+If the player is sprinting the mob's detect radius is bigger. 
+If the player is walking the mob's detect radius is smaller. 
+
+Once the player is detected however, the mob will chase the player. 
+To escape, the player must move outside a larger radius. 
+
+If the player does this, the mob should move to the last known position of
+the player.
+
+
+# Alerted:
+	Move towards player
+	if player farther than mob_lose_detection radius:
+		Set alerted = False
+		Take last known pos of player and move towards that instead.
+		
+# Not alerted:
+	if player comes within radius:
+		become alerted
+		
+		
+Flow:
+	Player outside Mob's detect radius
+	Player moves inside detect radius and mob becomes alerted
+	Mob begins to move to player's current (constantly updated) position
+	

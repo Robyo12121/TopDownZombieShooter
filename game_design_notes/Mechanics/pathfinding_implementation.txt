@@ -1,0 +1,17 @@
+Mobs have a steering force towards their target. 
+
+Each frame run A* to find path to target (player grid pos)
+
+While their current grid pos is not equal to the next grid the the path, 
+move to it. 
+
+Is there really a need to keep the steering force towards the target?
+
+
+Steps:
+If alerted:
+	Calculate path to player
+	While current grid pos is not the same as next in path:
+		Move to next in path
+	
+

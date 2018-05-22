@@ -1,0 +1,23 @@
+Define map size - height & width
+
+Define place to store wall locations - (x,y)
+
+define possible connections between walls (4-way) - up, down, left, right
+
+define way to check if a node is inside the map
+
+defind way to check if a node has a wall on it
+
+define way to find the neighbours of a node
+
+
+
+
+
+Seek function generates a steering vector to a target. 
+
+The target I'm passing it should be the position of the player or the position of the tile 
+that is the next tile on the path to the player. 
+
+I could check each update if I have reached the that tile, if so, move to the next tile in the 
+path. 

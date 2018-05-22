@@ -1,0 +1,9 @@
+
+
+I was following the excellent pygame tutorials from u/cbscribe and now I am trying to extend from these. 
+
+How can I get the 'last known' position of the player once the player moves outside the zombie's detection radius?
+
+The player position is a pg.math.Vector2 x,y position that is constantly updated from keyboard input. If I just assign the zombie's `self.last_known = self.game.player.pos` then due to python's not really copying a variable
+
+I want my zombies to chase the player if the player moves within the zombie's detect radius. This detect radius changes based on the movement speed of the player to make the zombie detect the player from further if the player is sprinting and not so far if the player is walking. 

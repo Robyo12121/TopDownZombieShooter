@@ -1,0 +1,8 @@
+Player has a fatigue number - 5000 ms worth of sprint?
+
+It should decrease at a certain rate while sprinting (well, 1ms per ms :P). Sprinting happens
+when holding down the LSHIFT key. 
+
+It should regen at a certain rate when not sprinting, when LSHIFT is not 
+
+It should regen faster if not moving comparted to when moving

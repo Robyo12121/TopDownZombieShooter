@@ -1,0 +1,17 @@
+See GDC Talk: https://www.youtube.com/watch?v=1nEJOkTjJqk&index=3&list=PL4WPKLHAQGLTHjBd96xHBroQP5_Au8jvi&t=0s
+MEATBAG!
+Player damage system where damage can be sustained, adapted to and overcome.
+
+Main Ideas:
+	Fear of getting damaged
+	Ability to adapt to injury to a certain extent.
+	Time should heal most things - no instant health pack nonsense.
+	Consequences to getting injured - should be options to overcome them.
+	Not too simulation like. Don't want endless list of limb stats, etc (at least not that
+	the player sees)
+
+Desired:
+Leg-broken? Player limps or crawls - affects total player 'well-being'
+		Speed reduced. Much less energy/fatigue available.
+No single HP of player necessarily or getting damaged doesn't affect this directly.
+Bleeding? - Lose health over time. If it gets 
