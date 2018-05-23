@@ -9,6 +9,7 @@ from sprites import *
 from os import path
 from tilemap import *
 import random
+import AI
 
 # HUD functions
 def draw_player_stats(surf, x, y, pct, col=None):
@@ -171,18 +172,27 @@ class Game:
         self.mobs = pg.sprite.Group()
         self.bullets = pg.sprite.Group()
         self.items = pg.sprite.Group()
+        
+        
+
         #For Loading map from tmx data
         for tile_object in self.map.tmxdata.objects:
             obj_center = vec(tile_object.x + tile_object.width/2, tile_object.y + tile_object.height/2)
             if tile_object.name == 'player':
                 self.player = Player(self, obj_center.x, obj_center.y)
             if tile_object.name == 'zombie':
-                Mob(self, obj_center.x, obj_center.y)
+                Mob(self, obj_center.x, obj_center.y) #For EM all entities must have unique id
             if tile_object.name == 'wall':
                 Obstacle(self, tile_object.x, tile_object.y, tile_object.width, tile_object.height)
             if tile_object.name in ['health', 'shotgun', 'pistol']:
                 Item(self, obj_center, tile_object.name)
-                
+
+        self.EM = AI.EntityManager()
+        for mob in self.mobs:
+            self.EM.add_entity(mob.id) #All entities must have a unique id
+            mob.SM.current_state = Zombie_States.Idle(mob)
+            mob.SN.global_state = Zombie_State.ZombieGlobalState(mob)
+                        
         assert self.player is not None
         self.camera = Camera(self.map.width, self.map.height) #Give camera total size of map
         # Flags
@@ -190,6 +200,8 @@ class Game:
         self.paused = False
         self.night = False
         self.effects_sounds['level_start'].play()
+
+        
         
     def run(self):
         pg.mixer.music.play()

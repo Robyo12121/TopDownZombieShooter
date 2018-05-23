@@ -1,0 +1,17 @@
+Questions:
+
+What are the global states for?
+To avoid ending up with duplicate code in every state. 
+For states that could occur at any time, regardless of the current state of the
+entity. So, instead of having to define a path from all states to some other state
+and writing that into every state definition class, you can define a global state#
+that can be reached from any other state. 
+Eg. Sims - the sim can go to the bathroom at any time, regardless of what it is
+currently doing. Do this by defining the bathroom state as a global state. 
+This keeps the logic for going to the bathroom out of every other state. 
+
+
+
+Do I need to have unique identifiers (ints) for all entities?
+
+Entity Manager

@@ -1,0 +1,24 @@
+Design of Zombie AI - states for Finite State Machine. 
+
+Idle
+Doesn't detect a target.
+Hasn't been recently chasing the player.
+
+Should wander around at a slow pace, in no particular direction, walking speed, 
+sometimes standing etc.
+
+Go to aggro state if sees/hears player or direct player action
+go to suspicious state is sees indirect player action (throwing stone?)
+
+Aggro
+Sees or hears the player or other entity (animals, NPC survivors etc)
+Hears an entities action (gunshot or whatever)
+
+Go to suspicious sate if lost player los.
+
+Suspicious
+Recently chasing a target but lost site of it.
+
+Should move to last known player point and move around a bit in different directions
+to see if it can find the player again. 
+IF not, go back to idle/wander state.

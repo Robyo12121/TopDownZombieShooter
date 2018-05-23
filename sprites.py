@@ -7,6 +7,16 @@ from random  import uniform, choice, randint, random
 import pytweening as tween
 import Path_finding
 import copy
+import AI
+
+
+class BaseGameEntity():
+    _nextID = 0
+    def __init__(self):
+        self.id = BaseGameEntity._nextID
+        BaseGameEntity._nextID += 1
+    def update(self):
+        raise NotImplementedError
 
 def vec2int(v):
     """Convert vector to tuple of ints as vectors not hashable"""
@@ -304,6 +314,7 @@ class Player(pg.sprite.Sprite):
         if self.health >= PLAYER_HEALTH:
             self.health = PLAYER_HEALTH
 
+
        
 class Mob(pg.sprite.Sprite):
     def __init__(self, game, x, y):
@@ -335,6 +346,8 @@ class Mob(pg.sprite.Sprite):
         self.last_known = None
         self.last_known_grid = None
         self.path = None
+
+        self.SM = AI.State_Machine(self)
 
     def avoid_mobs(self):
         for mob in self.game.mobs:
@@ -436,11 +449,13 @@ class Mob(pg.sprite.Sprite):
        
     def update(self):
         # Things to do every frame
+        self.SM.update()
         player_dist = self.game.player.pos - self.pos
         self.update_radius(self.game.player.vel)
         # Alerted
         if player_dist.length_squared() < self.detect_radius**2:
             self.alerted = True
+           #choice(self.game.zombie_moan_sounds
         else:
             self.alerted = False
 
