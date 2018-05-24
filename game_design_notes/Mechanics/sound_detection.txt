@@ -1,0 +1,21 @@
+In order to allow the zombie to hear the player when he does an action.
+
+Each player action should have a sound cost associated with it. 
+
+When the player does this action the player's sound cost increases. 
+
+A messaging system will then message nearby zombies to inform nearby entites of 
+the sound. 
+
+This system could be used in a multiplayer scenario to allow other players to 
+hear an action. 
+
+
+
+
+Simplest way to implement:
+
+Define a sound radius around the player for every action the player does. 
+If he shoots a gun his sound radius increases temporarily. If there are zombies within 
+that radius they will be alerted. 
+That's doing it on the player side though, which probably makes sense. 

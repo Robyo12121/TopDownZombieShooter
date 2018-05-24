@@ -12,24 +12,24 @@ class BaseGameEntity(object):
         raise NotImplementedError
 
 
-class EntityManager(object):
-    """Keeps track of all entities with a unique identifier
-        Dead entities should be removed when they die.
-        In the book this is a singleton class"""
-    def __init__(self):
-        self.active_entities = {}
-        # Active entities stored as string name in dict - is there a better way?
-        # Entities don't have numerical id's - identified by their name currently
-        
-    def add_entity(self, entity):
-        self.active_entities[entity.name] = entity
-
-    def remove_entity(self, str_entity_name):
-        del self.active_entities[str_entity_name]
-
-    def get_entity(self, str_entity_name):
-        return self.active_entities[str_entity_name]
-
+##class EntityManager(object):
+##    """Keeps track of all entities with a unique identifier
+##        Dead entities should be removed when they die.
+##        In the book this is a singleton class"""
+##    def __init__(self):
+##        self.active_entities = {}
+##        # Active entities stored as string name in dict - is there a better way?
+##        # Entities don't have numerical id's - identified by their name currently
+##        
+##    def add_entity(self, entity):
+##        self.active_entities[entity.name] = entity
+##
+##    def remove_entity(self, str_entity_name):
+##        del self.active_entities[str_entity_name]
+##
+##    def get_entity(self, str_entity_name):
+##        return self.active_entities[str_entity_name]
+##
 
 class State_Machine():
     """In the book this is a singleton class"""

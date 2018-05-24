@@ -10,6 +10,7 @@ from os import path
 from tilemap import *
 import random
 import AI
+import Zombie_States
 
 # HUD functions
 def draw_player_stats(surf, x, y, pct, col=None):
@@ -187,11 +188,12 @@ class Game:
             if tile_object.name in ['health', 'shotgun', 'pistol']:
                 Item(self, obj_center, tile_object.name)
 
-        self.EM = AI.EntityManager()
+##        self.EM = AI.EntityManager()
         for mob in self.mobs:
-            self.EM.add_entity(mob.id) #All entities must have a unique id
+            #self.EM.add_entity(mob.id) #All entities must have a unique id
             mob.SM.current_state = Zombie_States.Idle(mob)
-            mob.SN.global_state = Zombie_State.ZombieGlobalState(mob)
+            mob.SM.global_state = Zombie_States.ZombieGlobalState(self, mob)
+
                         
         assert self.player is not None
         self.camera = Camera(self.map.width, self.map.height) #Give camera total size of map
@@ -222,6 +224,7 @@ class Game:
         """For things that should happen every frame"""
         # update portion of the game loop
         self.all_sprites.update()
+        
         self.camera.update(self.player) # Call camera.update - give player as target to follow
         # Game over condition - No more zombies
 ##        if len(self.mobs) == 0:

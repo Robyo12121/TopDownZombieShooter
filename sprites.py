@@ -6,7 +6,6 @@ vec = pg.math.Vector2
 from random  import uniform, choice, randint, random
 import pytweening as tween
 import Path_finding
-import copy
 import AI
 
 
@@ -316,8 +315,9 @@ class Player(pg.sprite.Sprite):
 
 
        
-class Mob(pg.sprite.Sprite):
+class Mob(pg.sprite.Sprite, BaseGameEntity):
     def __init__(self, game, x, y):
+        BaseGameEntity.__init__(self)
         self._layer = MOB_LAYER
         self.groups = game.all_sprites, game.mobs
         pg.sprite.Sprite.__init__(self, self.groups)
@@ -439,6 +439,14 @@ class Mob(pg.sprite.Sprite):
 
 ####    def bfs_map_follow(self):
 ####        path = self.game.map.reconstruct_path(
+    def test_for_player(self, player):
+        player_dist = player.pos - self.pos
+        self.update_radius(player.vel)
+        if player_dist.length_squared() < self.detect_radius**2:
+            return True
+        else:
+            return False
+
 
     def update_radius(self, tgt_vel):
         """Calculate detect radius based on player speed"""
@@ -450,30 +458,30 @@ class Mob(pg.sprite.Sprite):
     def update(self):
         # Things to do every frame
         self.SM.update()
-        player_dist = self.game.player.pos - self.pos
-        self.update_radius(self.game.player.vel)
-        # Alerted
-        if player_dist.length_squared() < self.detect_radius**2:
-            self.alerted = True
-           #choice(self.game.zombie_moan_sounds
-        else:
-            self.alerted = False
-
-        if self.alerted: # Mob chasing player
-            self.speed = choice(MOB_SPRINT_SPEEDS)
-            self.first = True
-            self.move(self.game.player.pos)
-        else: # Mob lost player
-            if self.first:
-                self.last_known = vec2int(self.game.player.pos)
-                self.first = False
-            if self.last_known is not None:
-                last_known_dist = self.pos - vec(self.last_known)
-                if last_known_dist.length_squared() > 1000: # 1000 just a number that leaves mob close to but not exactly on last known pos of player
-                    self.move(self.last_known)
-                else:
-                    # function or code to make mob wander around
-                    self.speed = choice(MOB_WANDER_SPEEDS)
+##        player_dist = self.game.player.pos - self.pos
+##        self.update_radius(self.game.player.vel)
+##        # Alerted
+##        if test_for_player(self.game.player):
+##            self.alerted = True
+##           #choice(self.game.zombie_moan_sounds
+##        else:
+##            self.alerted = False
+##
+##        if self.alerted: # Mob chasing player
+##            self.speed = choice(MOB_SPRINT_SPEEDS)
+##            self.first = True
+##            self.move(self.game.player.pos)
+##        else: # Mob lost player
+##            if self.first:
+##                self.last_known = vec2int(self.game.player.pos)
+##                self.first = False
+##            if self.last_known is not None:
+##                last_known_dist = self.pos - vec(self.last_known)
+##                if last_known_dist.length_squared() > 1000: # 1000 just a number that leaves mob close to but not exactly on last known pos of player
+##                    self.move(self.last_known)
+##                else:
+##                    # function or code to make mob wander around
+##                    self.speed = choice(MOB_WANDER_SPEEDS)
                     
         if self.health <= 0:
             choice(self.game.zombie_hit_sounds).play()
