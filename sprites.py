@@ -67,12 +67,12 @@ class Gun(object):
         
     def reload(self, amount):
         if not self.can_reload():
-            print("Full")
+            #print("Full")
             return
         elif amount > self.data['capacity'] - self.remaining_shots:
-            print("That's too much!")
+            pass
         else:
-            print("Reloading: ",amount)
+            #print("Reloading: ",amount)
             self.remaining_shots += amount
         
 
@@ -170,21 +170,21 @@ class Player(pg.sprite.Sprite):
                     sound.play()
                 MuzzleSmoke(self.game, pos)
                 self.weapon.shoot()
-                print(self.weapon.remaining_shots)
+                #print(self.weapon.remaining_shots)
 
     def reload(self):
         """"""
         # Got a weapon to reload?
         if not self.weapon:
-            print("no weapon equipped")
+            #print("no weapon equipped")
             return
         # Got space in mag to reload?
         if not self.weapon.can_reload():
-            print("weapon full")
+            #print("weapon full")
             return
         # Got ammo in inventory with which to reload it?
         if self.items['ammo'][self.weapon.name] <= 0:
-            print("No ammo for this")
+            #print("No ammo for this")
             return
         if self.items['ammo'][self.weapon.name] >= self.weapon.space():
             self.items['ammo'][self.weapon.name] -= self.weapon.space()
@@ -194,11 +194,11 @@ class Player(pg.sprite.Sprite):
             self.items['ammo'][self.weapon.name] = 0
         self.game.effects_sounds['gun_pickup'].play()
           
-        print("Inventory ammo: {}".format(self.items['ammo'][self.weapon.name]))
-        print("Ammo in gun: {}".format(self.weapon.remaining_shots))      
+        #print("Inventory ammo: {}".format(self.items['ammo'][self.weapon.name]))
+        #print("Ammo in gun: {}".format(self.weapon.remaining_shots))      
             
     def pickup(self, weapon):
-        print("{} found".format(weapon))
+        #print("{} found".format(weapon))
         # Change sprite image
         if not self.current_image == 'gun':
             self.current_image = 'gun'
@@ -206,32 +206,32 @@ class Player(pg.sprite.Sprite):
 
         # New weapon in inventory?
         if weapon in self.items['weapons']: # Picked up weapon already there?
-            print("Weapon in inventory already")
+            #print("Weapon in inventory already")
             # Just take the ammo
             self.add_ammo(weapon)
         else: # New weapon not in inventory
             if self.weapon is not None: # Already holding a weapon
                 # Put current weapon away
-                print("Putting current weapon away")
+                #print("Putting current weapon away")
                 self.items['weapons'][self.weapon.name] = self.weapon # Put that weapon in inv
             # Add it to inventory and equip it
-            print("Don't have that weapon")
+            #print("Don't have that weapon")
             self.items['weapons'][weapon] = Gun(weapon)
             self.weapon = self.items['weapons'][weapon]
             self.add_ammo(weapon)
             
     def add_ammo(self, weapon):
         if weapon in self.items['ammo']: # Already have some of that ammo?
-            print("Have some of that ammo already")
+            #print("Have some of that ammo already")
             # Add more ammo
             self.items['ammo'][weapon] += WEAPONS[weapon]['capacity']
         else: # Don't already have some of that ammo
-            print("New ammo type")
+            #print("New ammo type")
             # Add a mag's worth to inventory
             self.items['ammo'][weapon] = WEAPONS[weapon]['capacity']
             
     def cycle_weapon(self):
-        print("Inventory: {}".format(self.items['weapons'].keys()))
+        #print("Inventory: {}".format(self.items['weapons'].keys()))
         if self.weapon == None:
             return
         for name, obj in self.items['weapons'].items():
@@ -386,7 +386,14 @@ class Mob(pg.sprite.Sprite, BaseGameEntity):
 ##        """move along a preset series of grid squares"""
 ##        if self.grid_pos == self.path[
 ##        pass
-
+    def wander(self):
+        #Face a random direction
+        self.target = 
+        # move that way for a few seconds
+        
+        # stop for a few seconds
+        #repeat
+    
     def move(self, target):
         """Accepts target in vector form?"""
         #target = vec2int(target)
@@ -439,50 +446,18 @@ class Mob(pg.sprite.Sprite, BaseGameEntity):
 
 ####    def bfs_map_follow(self):
 ####        path = self.game.map.reconstruct_path(
+        
     def test_for_player(self, player):
         player_dist = player.pos - self.pos
-        self.update_radius(player.vel)
+##        self.update_radius(player.vel)
         if player_dist.length_squared() < self.detect_radius**2:
             return True
         else:
             return False
-
-
-    def update_radius(self, tgt_vel):
-        """Calculate detect radius based on player speed"""
-        if self.alerted == True:
-            self.detect_radius = MOB_LOSE_DETECT    
-        else:
-            self.detect_radius = MOB_DETECT_BASE + int(tgt_vel.length() * MOB_DETECT_MOD)
        
     def update(self):
         # Things to do every frame
-        self.SM.update()
-##        player_dist = self.game.player.pos - self.pos
-##        self.update_radius(self.game.player.vel)
-##        # Alerted
-##        if test_for_player(self.game.player):
-##            self.alerted = True
-##           #choice(self.game.zombie_moan_sounds
-##        else:
-##            self.alerted = False
-##
-##        if self.alerted: # Mob chasing player
-##            self.speed = choice(MOB_SPRINT_SPEEDS)
-##            self.first = True
-##            self.move(self.game.player.pos)
-##        else: # Mob lost player
-##            if self.first:
-##                self.last_known = vec2int(self.game.player.pos)
-##                self.first = False
-##            if self.last_known is not None:
-##                last_known_dist = self.pos - vec(self.last_known)
-##                if last_known_dist.length_squared() > 1000: # 1000 just a number that leaves mob close to but not exactly on last known pos of player
-##                    self.move(self.last_known)
-##                else:
-##                    # function or code to make mob wander around
-##                    self.speed = choice(MOB_WANDER_SPEEDS)
-                    
+        self.SM.update()                  
         if self.health <= 0:
             choice(self.game.zombie_hit_sounds).play()
             self.kill()

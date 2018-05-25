@@ -191,7 +191,7 @@ class Game:
 ##        self.EM = AI.EntityManager()
         for mob in self.mobs:
             #self.EM.add_entity(mob.id) #All entities must have a unique id
-            mob.SM.current_state = Zombie_States.Idle(mob)
+            mob.SM.current_state = Zombie_States.Idle(self, mob)
             mob.SM.global_state = Zombie_States.ZombieGlobalState(self, mob)
 
                         
@@ -224,8 +224,8 @@ class Game:
         """For things that should happen every frame"""
         # update portion of the game loop
         self.all_sprites.update()
-        
         self.camera.update(self.player) # Call camera.update - give player as target to follow
+
         # Game over condition - No more zombies
 ##        if len(self.mobs) == 0:
 ##            self.playing = False
@@ -264,7 +264,7 @@ class Game:
             if hit.type in WEAPONS.keys():
                 hit.kill()
                 self.player.pickup(hit.type)
-                print(hit.type)
+                #print(hit.type)
         
     def draw_grid(self):
         for x in range(0, WIDTH, TILESIZE):

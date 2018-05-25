@@ -14,7 +14,7 @@ CYAN = (0, 255, 255)
 # Game settings
 WIDTH = 1024   # 16 * 64 or 32 * 32 or 64 * 16
 HEIGHT = 768  # 16 * 48 or 32 * 24 or 64 * 12
-FPS = 60
+FPS = 100
 TITLE = "Tilemap Demo"
 BGCOLOR = BROWN
 TILESIZE = 64
@@ -47,7 +47,7 @@ WALL_IMG = 'tileGreen_39.png'
 #Mob
 MOB_IMG = 'zombie1_hold.png'
 MOB_SPRINT_SPEEDS = [200, 150, 175, 100, 125, 150, 150, 300, 300]
-MOB_WANDER_SPEEDS = [50, 20, 75, 60, 100, 40, 30, 80]
+MOB_WANDER_SPEEDS = [50, 20, 60, 40, 30]
 MOB_HIT_RECT = pg.Rect(0,0,30,30)
 MOB_HEALTH = 100
 MOB_DAMAGE = 2
@@ -62,6 +62,7 @@ MOB_HIT_CHANCE = 0.05
 MOB_HIT_TIMEOUT = 1000 # ms
 MOB_SOUND_CHANCE_DETECT_PLAYER = 0.004 #random.random()
 MOB_PATH_UPDATE = 3000
+MOB_SUSP_TIME = 10000
 
 # Weapon Settings
 BULLET_IMG = 'bulletBeige.png'

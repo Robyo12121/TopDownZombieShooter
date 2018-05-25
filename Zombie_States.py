@@ -17,15 +17,22 @@ class ZombieGlobalState(State):
         #Conditional things in if statements#
         #Things to happen every update
         # Put in changes that can occur from any state to avoid having to repeat it in
-        # all states that need it. 
-        # player detected
-        if self.mob.test_for_player(self.game.player):
-            self.mob.SM.change_state(Aggro(self.game, self.mob))
-        else:
-            if self.mob.SM.previous_state == None:
-                self.mob.SM.change_state(Idle(self.mob))
-            else:
-                self.mob.SM.revert_to_previous_state()
+        # all states that need it.
+        pass
+##        if self.mob.test_for_player(self.game.player): #Alerted
+##            self.mob.alerted = True
+##            if isinstance(self.mob.SM.current_state, Aggro):
+##                pass
+##            else:
+##                self.mob.SM.change_state(Aggro(self.game, self.mob))
+##        else: #
+##            self.mob.alerted = False
+##            if self.mob.SM.previous_state == None:
+##                self.mob.SM.change_state(Idle(self.game, self.mob))
+##            elif isinstance(self.mob.SM.previous_state, Aggro):
+##                self.mob.SM.change_state(Suspicious(self.game, self.mob))
+##            else:
+##                self.mob.SM.revert_to_previous_state()
                   
             
     def exit(self):
@@ -33,17 +40,23 @@ class ZombieGlobalState(State):
 
 
 class Idle(State):
-    def __init__(self, mob):
+    def __init__(self, game, mob):
         self.mob = mob
-
+        self.game = game
+        
     def enter(self):
-        pass
+        self.mob.speed = choice(MOB_WANDER_SPEEDS)
+        self.mob.detect_radius = MOB_DETECT_BASE + int(self.game.player.vel.length() * MOB_DETECT_MOD)
+        print("Idle detect radius: {}".format(self.mob.detect_radius))
 
     def execute(self):
         #Chance to play idle sound every few seconds
         # Behaviour 1 - pick random direction to walk (slow), pause, pick new direction etc
         # Behaviour 2 - walk constantly (slow) changing direction every 10 or so seconds        
-        pass
+        self.mob.detect_radius = MOB_DETECT_BASE + int(self.game.player.vel.length() * MOB_DETECT_MOD)
+        if self.mob.test_for_player(self.game.player):
+            self.mob.SM.change_state(Aggro(self.game, self.mob))
+        
     def exit(self):
         pass
 
@@ -54,30 +67,56 @@ class Aggro(State):
         self.game = game
         
     def enter(self):
+        self.mob.speed = choice(MOB_SPRINT_SPEEDS)
+        self.mob.alerted = True
+        self.mob.detect_radius = MOB_LOSE_DETECT
+        print("Aggro detect radius: {}".format(self.mob.detect_radius))
+
         if isinstance(self.mob.SM.previous_state, Idle) or isinstance(self.mob.SM.previous_state, Suspicious):
             choice(self.game.zombie_moan_sounds).play()
     
     def execute(self):
-        self.mob.speed = choice(MOB_SPRINT_SPEEDS)
-        self.mob.move(self.game.player.pos)
+        if self.mob.test_for_player(self.game.player):            
+            self.mob.first = True
+            self.mob.speed = choice(MOB_SPRINT_SPEEDS)
+            self.mob.move(self.game.player.pos)
+        else:
+            self.mob.SM.change_state(Suspicious(self.game, self.mob))
                 
     def exit(self):
-        pass
+        self.mob.alerted = False
 
 
 class Suspicious(State):
-    def __init__(self, mob):
+    def __init__(self, game, mob):
         self.mob = mob
+        self.game = game
 
     def enter(self):
-        if isinstance(self.mob.SM.previous_state, Aggro):
-            self.mob.last_known = vec2int(self.game.player.pos)
+        self.mob.speed = choice(MOB_SPRINT_SPEEDS)
+        self.detect_radius = MOB_DETECT_BASE + int(self.game.player.vel.length() * MOB_DETECT_MOD)
+        print("Suspicious detect radius: {}".format(self.mob.detect_radius))
+        self.mob.last_known = vec2int(self.game.player.pos)
+        self.mob.first = False
+        # Assuming always coming from Aggro state.
+        self.time_since_aggro = pg.time.get_ticks()
 
     def execute(self):
+        # Check that timer hasn't expired. 
+        now = pg.time.get_ticks()
+        if now - self.time_since_aggro > MOB_SUSP_TIME:
+            self.mob.SM.change_state(Idle(self.game, self.mob))
+            
+        if self.mob.test_for_player(self.game.player):
+            self.mob.SM.change_state(Aggro(self.game, self.mob))
+            
         last_known_dist = self.mob.pos - vec(self.mob.last_known)
+                                          
         if last_known_dist.length_squared() > 1000: # while not within 1000 pixels?
             self.mob.move(self.mob.last_known)
         else:
             self.mob.speed = choice(MOB_WANDER_SPEEDS)
+            self.mob.wander()
+                                          
     def exit(self):
         pass
