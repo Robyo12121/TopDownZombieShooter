@@ -1,0 +1,1 @@
+Rendering text that doesn't change, every frame.

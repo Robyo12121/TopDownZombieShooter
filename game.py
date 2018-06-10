@@ -6,6 +6,8 @@ import pygame as pg
 import sys
 from settings import *
 from sprites import *
+from player_class import *
+from mob_class import Mob
 from os import path
 from tilemap import *
 import random
@@ -174,8 +176,6 @@ class Game:
         self.bullets = pg.sprite.Group()
         self.items = pg.sprite.Group()
         
-        
-
         #For Loading map from tmx data
         for tile_object in self.map.tmxdata.objects:
             obj_center = vec(tile_object.x + tile_object.width/2, tile_object.y + tile_object.height/2)
@@ -201,9 +201,7 @@ class Game:
         self.draw_debug = False
         self.paused = False
         self.night = False
-        self.effects_sounds['level_start'].play()
-
-        
+        self.effects_sounds['level_start'].play()   
         
     def run(self):
         pg.mixer.music.play()
@@ -318,6 +316,7 @@ class Game:
         if self.paused:
             self.screen.blit(self.dim_screen, (0,0))
             self.draw_text("Paused", self.title_font, 105, RED, WIDTH/2, HEIGHT/2, align='center')
+
         pg.display.flip()
 
     def play_new_song(self):
@@ -379,10 +378,11 @@ class Game:
                 if event.type == pg.KEYUP:
                     waiting = False
 
-# create the game object
-g = Game()
-g.show_start_screen()
-while True:
-    g.new()
-    g.run()
-    g.show_go_screen()
+if __name__ == '__main__':
+    # create the game object
+    g = Game()
+    g.show_start_screen()
+    while True:
+        g.new()
+        g.run()
+        g.show_go_screen()
