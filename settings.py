@@ -53,9 +53,9 @@ MOB_HEALTH = 100
 MOB_DAMAGE = 2
 MOB_KNOCKBACK = 20
 AVOID_RADIUS = 50
-MOB_DETECT_BASE = 200
+MOB_DETECT_BASE = 100
 MOB_LOSE_DETECT = 400
-MOB_DETECT_MOD = 0.25
+MOB_DETECT_MOD = 0.75
 MOB_ATTACK_RADIUS = 50
 MOB_SEEK_FORCE = 0.1
 MOB_HIT_CHANCE = 0.05
@@ -144,8 +144,7 @@ ZOMBIE_MOAN_SOUNDS = ['zombie/spotted_0.ogg','zombie/spotted_1.ogg','zombie/spot
                       'zombie/spotted_12.ogg','zombie/spotted_13.ogg',]
 ZOMBIE_HIT_SOUNDS = ['zombie/splat-15.wav']
 WEAPON_SOUNDS = {'pistol':['gun/pistol.wav'],
-                 'shotgun':['gun/shotgun.wav']
-                 }
+                 'shotgun':['gun/shotgun.wav']}
 EFFECTS_SOUNDS = {'level_start': {'file': 'level_start.wav', 'volume': 0.1},
                   'health_up': {'file': 'items/health_pack.wav','volume': 0.1},
                   'gun_pickup': {'file': 'gun/gun_pickup.wav','volume': 0.1}}
