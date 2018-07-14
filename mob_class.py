@@ -4,6 +4,7 @@ from random  import uniform, choice
 from sprites import BaseGameEntity, collide_with_walls
 import Path_finding
 import AI
+from math import acos
 
 
 class Mob(pg.sprite.Sprite, BaseGameEntity):
@@ -37,6 +38,7 @@ class Mob(pg.sprite.Sprite, BaseGameEntity):
         self.last_known = None
         self.last_known_grid = None
         self.path = None
+        self.last_wander = 0
 
         self.SM = AI.State_Machine(self)
 
@@ -63,16 +65,38 @@ class Mob(pg.sprite.Sprite, BaseGameEntity):
 ##        """move along a preset series of grid squares"""
 ##        if self.grid_pos == self.path[
 ##        pass
+    def arrived(self, target):
+        assert isinstance(target,vec)
+        target_dist = self.pos - target
+        if target_dist.length_squared() > MOB_NEARBY_DIST:
+            return False
+        else:
+            return True
+    
     def wander(self):
-        
-        #Face a random direction
-        self.rot = uniform(0,360)
-        self.image = pg.transform.rotate(self.game.mob_img, self.rot)
+        now = pg.time.get_ticks()
+        if self.target is None:
+            self.target = self.get_rand_nearby_point()
+
+        if now - self.last_wander > MOB_WANDER_TIME:
+            print("performing wander...")
+            self.last_wander = now
+            self.target = self.get_rand_nearby_point()
+
+        else:
+            self.move_to_target(self.target)
+
+        #pg.draw.line(self.image, RED, self.pos, self.target, 7)
         # move that way for a few seconds
-        self.rect = self.image.get_rect()
-        self.rect.center = self.pos
         # stop for a few seconds
         #repeat
+        
+
+    def get_rand_nearby_point(self):       
+        del_x = uniform(-self.detect_radius, self.detect_radius)
+        del_y = uniform(-self.detect_radius, self.detect_radius)
+        offset = vec(del_x, del_y)
+        return self.pos + offset
         
     def face_target(self, target):
         """Accepts a position """
@@ -80,10 +104,6 @@ class Mob(pg.sprite.Sprite, BaseGameEntity):
         target_vec = target - self.pos # vector from first pos to target pos
         self.rot = target_vec.angle_to(vec(1, 0)) # get angle between current target and 'east'. why though?
         self.image = pg.transform.rotate(self.game.mob_img, self.rot)
-
-    def move_dir_speed_for(self, direction, speed, time):
-        #self.rot =
-        pass
 
     def avoid_mobs(self):
         for mob in self.game.mobs:
@@ -153,14 +173,21 @@ class Mob(pg.sprite.Sprite, BaseGameEntity):
 ####    def bfs_map_follow(self):
 ####        path = self.game.map.reconstruct_path(
         
+
+####        player_dist = player.pos - self.pos
+####        player_direction = player_dist.normalize()
+####        dot_product = self_rot_norm.dot(player_rot_norm)
+####        angle_to_player = acos(dot_product)
+####        print(angle_to_player)
+####        self.update_radius(player.vel)
+
     def test_for_player(self, player):
-        player_dist = player.pos - self.pos
-##        self.update_radius(player.vel)
-        if player_dist.length_squared() < self.detect_radius**2:
+        if self.pos.distance_squared_to(player.pos) < self.detect_radius**2:
+            dot_product = 
             return True
         else:
             return False
-       
+            
     def update(self):
         # Things to do every frame
         self.SM.update()                  
@@ -169,6 +196,7 @@ class Mob(pg.sprite.Sprite, BaseGameEntity):
             self.kill()
             self.game.map_img.blit(self.game.splat, self.pos - vec(32,32))
         self.draw_health()
+
 
     def draw_health(self):
         if self.health < MOB_HEALTH:
@@ -181,3 +209,7 @@ class Mob(pg.sprite.Sprite, BaseGameEntity):
             width = int(self.rect.width * self.health /MOB_HEALTH)
             self.health_bar = pg.Rect(0,0, width, 7)
             pg.draw.rect(self.image, col, self.health_bar)
+
+
+        
+        

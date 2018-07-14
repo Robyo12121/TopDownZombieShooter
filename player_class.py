@@ -59,7 +59,7 @@ class Player(pg.sprite.Sprite):
             # Sprinting
             if keys[pg.K_LSHIFT]:
                 # Have fatigue
-                if self.fatigue > 0:
+                if self.fatigue > 100:
                     self.vel = vec(PLAYER_SPRINT_SPEED, 0).rotate(-self.rot)
                     self.fatigue -= PLAYER_FATIGUE_RATE
                 # No fatigue

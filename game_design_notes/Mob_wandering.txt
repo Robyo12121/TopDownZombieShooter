@@ -1,0 +1,16 @@
+Mob wandering behaviour. 
+
+Walking:
+Pick a random direction to walk and walk that way
+vary angle every 10 seconds or so
+If stuck on something, turn around. 
+
+Standing:
+Stand idle, making sounds every once in a while, 
+breathing sounds, other idle sounds
+Idle animations also. 
+
+
+Implementation:
+
+#1 - Pick a random point and move to it at wander speed

@@ -110,9 +110,9 @@ class Suspicious(State):
         if self.mob.test_for_player(self.game.player):
             self.mob.SM.change_state(Aggro(self.game, self.mob))
             
-        last_known_dist = self.mob.pos - vec(self.mob.last_known)
-                                          
-        if last_known_dist.length_squared() > 1000: # while not within 1000 pixels?
+        last_known_dist = self.mob.pos - vec(self.mob.last_known)                                 
+        if last_known_dist.length_squared() > 5000: # while not within 1000 pixels?
+            
             self.mob.move_to_target(self.mob.last_known)
         else:
             self.mob.speed = choice(MOB_WANDER_SPEEDS)
