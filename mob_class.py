@@ -5,7 +5,7 @@ from sprites import BaseGameEntity, collide_with_walls
 import Path_finding
 import AI
 from math import acos
-
+vec = pg.math.Vector2
 
 class Mob(pg.sprite.Sprite, BaseGameEntity):
     def __init__(self, game, x, y):
@@ -25,6 +25,7 @@ class Mob(pg.sprite.Sprite, BaseGameEntity):
         self.acc = vec(0,0) #Acceleration to delay movement speed
         self.rect.center = self.pos
         self.rot = uniform(0,360)
+        self.direction = vec(self.rot, 0).normalize
         self.image = pg.transform.rotate(self.game.mob_img, self.rot)
         self.health = MOB_HEALTH
         self.speed = choice(MOB_WANDER_SPEEDS)
@@ -41,8 +42,6 @@ class Mob(pg.sprite.Sprite, BaseGameEntity):
         self.last_wander = 0
 
         self.SM = AI.State_Machine(self)
-
-
 
 ##    def follow_path(self, path, current_target):
 ##        """Sets target to first item in path and once sprite reaches it change to the
@@ -65,6 +64,7 @@ class Mob(pg.sprite.Sprite, BaseGameEntity):
 ##        """move along a preset series of grid squares"""
 ##        if self.grid_pos == self.path[
 ##        pass
+        
     def arrived(self, target):
         assert isinstance(target,vec)
         target_dist = self.pos - target
@@ -90,7 +90,6 @@ class Mob(pg.sprite.Sprite, BaseGameEntity):
         # move that way for a few seconds
         # stop for a few seconds
         #repeat
-        
 
     def get_rand_nearby_point(self):       
         del_x = uniform(-self.detect_radius, self.detect_radius)
@@ -183,20 +182,21 @@ class Mob(pg.sprite.Sprite, BaseGameEntity):
 
     def test_for_player(self, player):
         if self.pos.distance_squared_to(player.pos) < self.detect_radius**2:
-            dot_product = 
+            #dot_product = 
             return True
         else:
             return False
             
     def update(self):
         # Things to do every frame
-        self.SM.update()                  
+        self.SM.update()
+        self.direction = vec(self.rot, 0).normalize
+##        print(self.direction[0], self.direction[1])
         if self.health <= 0:
             choice(self.game.zombie_hit_sounds).play()
             self.kill()
             self.game.map_img.blit(self.game.splat, self.pos - vec(32,32))
         self.draw_health()
-
 
     def draw_health(self):
         if self.health < MOB_HEALTH:
@@ -209,7 +209,3 @@ class Mob(pg.sprite.Sprite, BaseGameEntity):
             width = int(self.rect.width * self.health /MOB_HEALTH)
             self.health_bar = pg.Rect(0,0, width, 7)
             pg.draw.rect(self.image, col, self.health_bar)
-
-
-        
-        
