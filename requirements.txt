@@ -1,0 +1,8 @@
+Package    Version
+---------- -------
+pip        18.1   
+pygame     1.9.4  
+PyTMX      3.21.6 
+PyTweening 1.0.3  
+setuptools 39.0.1 
+six        1.12.0 
