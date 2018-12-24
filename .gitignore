@@ -1,1 +1,6 @@
+__pycache__
 __pycache__/*
+*.log
+venv/*
+.vscode/*
+*.pyc

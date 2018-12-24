@@ -4,7 +4,7 @@ from tilemap import collide_hit_rect, reconstruct_path #a_star_search, dijkstra_
 vec = pg.math.Vector2
 from random  import uniform, choice
 import pytweening as tween
-import Path_finding
+import pathfinding
 import AI
 
 

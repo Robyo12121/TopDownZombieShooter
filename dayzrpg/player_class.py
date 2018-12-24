@@ -6,6 +6,7 @@ from itertools import chain
 
 vec = pg.math.Vector2
 
+
 class Player(pg.sprite.Sprite):
     #Note passing the sprite a copy of the game.
     #  This player constructor is called in game class
