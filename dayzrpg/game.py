@@ -5,30 +5,34 @@
 import pygame as pg
 import sys
 from settings import *
-from sprites import *
-from player_class import *
+from sprites import Obstacle, Item, collide_hit_rect
+from player_class import Player
 from mob_class import Mob
 from os import path
-from tilemap import *
+from tilemap import TiledMap, Camera
 import random
 # import AI
 import zombie_states
 import logging
+vec = pg.math.Vector2
+
 
 # configure logging
-loglevel = logging.DEBUG
-logger = logging.getLogger(__name__)
-logger.setLevel(loglevel)
-ch = logging.StreamHandler()
-ch.setLevel(loglevel)
-fh = logging.FileHandler(__file__.split('.')[0] + '.log')
-fh.setLevel(loglevel)
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-ch.setFormatter(formatter)
-fh.setFormatter(formatter)
-logger.addHandler(ch)
-logger.addHandler(fh)
-logger.debug('Program start')
+def setup_logger(name=__name__, file=None, loglevel=logging.DEBUG):
+    logger = logging.getLogger(name)
+    logger.setLevel(loglevel)
+    ch = logging.StreamHandler()
+    ch.setLevel(loglevel)
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    if file is not None:
+        fh = logging.FileHandler(f"{file.split('.')[0]}_{name}.log")
+        fh.setLevel(loglevel)
+        fh.setFormatter(formatter)
+        logger.addHandler(fh)
+
+    ch.setFormatter(formatter)
+    logger.addHandler(ch)
+    return logger
 
 
 # HUD functions
@@ -58,6 +62,8 @@ def draw_player_stats(surf, x, y, pct, col=None):
 
 class Game:
     def __init__(self):
+        self.logger = logging.getLogger(f"{__name__}.Game")
+        self.logger.debug("Initializing game object")
         pg.mixer.pre_init(44100, -16, 1, 1024)  # increase sound buffer to minise lag when playing sounds
         pg.init()
         self.screen = pg.display.set_mode((WIDTH, HEIGHT))
@@ -94,6 +100,7 @@ class Game:
         self.screen.blit(text_surface, text_rect)
 
     def load_images(self):
+        self.logger.debug("loading images...")
         # Define game folders
         image_folder = path.join(self.game_folder, 'data/images')
         # Load images from files
@@ -126,6 +133,7 @@ class Game:
         self.light_rect = self.light_mask.get_rect()
 
     def load_sounds(self):
+        self.logger.debug("loading sounds...")
         sound_folder = path.join(self.game_folder, 'data/sounds')
         self.music_folder = path.join(self.game_folder, 'data/music')
         # Load initial music - define user event to trigger when it ends, picked up in events()
@@ -251,7 +259,7 @@ class Game:
                 hit.last_hit = now
                 # self.player.health -= MOB_DAMAGE
                 hit.vel = vec(0, 0)
-                choice(self.player_hit_sounds).play()
+                random.choice(self.player_hit_sounds).play()
                 if self.player.health <= 0:
                     self.playing = False
                 self.player.got_hit()
@@ -358,7 +366,6 @@ class Game:
                     self.paused = not self.paused
                 if event.key == pg.K_n:
                     self.night = not self.night
-                #     THIS IS SPRITE SPECIFIC CODE - SHOULDN'T BE HERE ####
                 if event.key == pg.K_r:
                     self.player.reload()
                 if event.key == pg.K_SPACE:
@@ -395,6 +402,8 @@ class Game:
 
 if __name__ == '__main__':
     # create the game object
+    logger = setup_logger(__name__)
+    logger.debug("Starting Game")
     g = Game()
     g.show_start_screen()
     while True:

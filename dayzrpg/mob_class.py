@@ -5,14 +5,18 @@ from sprites import BaseGameEntity, collide_with_walls
 # import pathfinding
 import AI
 # from math import acos
-# import logging
+import logging
 
 vec = pg.math.Vector2
+logger = logging.getLogger(__name__)
+logger.debug(f"logging from {__name__}")
 
 
 class Mob(pg.sprite.Sprite, BaseGameEntity):
     def __init__(self, game, x, y):
         BaseGameEntity.__init__(self)
+        self.logger = logging.getLogger(__name__)
+        self.logger.debug("Creating mob")
         self._layer = MOB_LAYER
         self.groups = game.all_sprites, game.mobs
         pg.sprite.Sprite.__init__(self, self.groups)
@@ -81,7 +85,7 @@ class Mob(pg.sprite.Sprite, BaseGameEntity):
             self.target = self.get_rand_nearby_point()
 
         if now - self.last_wander > MOB_WANDER_TIME:
-            print("performing wander...")
+            logging.info("performing wander...")
             self.last_wander = now
             self.target = self.get_rand_nearby_point()
 

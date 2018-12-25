@@ -21,22 +21,22 @@ TILESIZE = 64
 GRIDWIDTH = WIDTH / TILESIZE
 GRIDHEIGHT = HEIGHT / TILESIZE
 MAP_NAME = 'level1.tmx'
-#Player settings
+# Player settings
 PLAYER_SPRINT_SPEED = 300
-PLAYER_NORMAL_SPEED = 200 #PIXELS per second
+PLAYER_NORMAL_SPEED = 200  # PIXELS per second
 PLAYER_WALK_SPEED = 100
-PLAYER_ROT_SPEED = 400 # Degrees per frame?
+PLAYER_ROT_SPEED = 400  # Degrees per frame?
 PLAYER_IMGS = {'gun': 'survivor1_gun.png',
                'stand': 'survivor1_stand.png',
                'hold': 'survivor1_hold.png'}
 PLAYER_HIT_RECT = pg.Rect(0, 0, 35, 35)
 BARREL_OFFSET = vec(30, 10)
 PLAYER_HEALTH = 100
-PLAYER_FATIGUE = 15000 # ms
-PLAYER_FATIGUE_RATE =  100# ?
-PLAYER_FATIGUE_REGEN_STATIONARY = 40 # * 1000 ms/s
-PLAYER_FATIGUE_REGEN_WALKING = 30 # * 1000 ms/s
-PLAYER_FATIGUE_REGEN_NORMAL = 10 # ?
+PLAYER_FATIGUE = 15000  # ms
+PLAYER_FATIGUE_RATE = 100  # ?
+PLAYER_FATIGUE_REGEN_STATIONARY = 40  # * 1000 ms/s
+PLAYER_FATIGUE_REGEN_WALKING = 30  # * 1000 ms/s
+PLAYER_FATIGUE_REGEN_NORMAL = 10  # ?
 PLAYER_INFECTION_CHANCE = 0.05
 PLAYER_INFECTION_AMOUNT = 1
 PLAYER_INFECTION_INTERVAL = 5000
@@ -44,11 +44,11 @@ PLAYER_INFECTION_AMOUNT = 0.5
 
 WALL_IMG = 'tileGreen_39.png'
 
-#Mob
+# Mob
 MOB_IMG = 'zombie1_hold.png'
 MOB_SPRINT_SPEEDS = [200, 150, 175, 100, 125, 150, 150, 300, 300]
 MOB_WANDER_SPEEDS = [50, 20, 60, 40, 30]
-MOB_HIT_RECT = pg.Rect(0,0,30,30)
+MOB_HIT_RECT = pg.Rect(0, 0, 30, 30)
 MOB_HEALTH = 100
 MOB_DAMAGE = 2
 MOB_KNOCKBACK = 20
@@ -60,29 +60,29 @@ MOB_DETECT_MOD = 0.75
 MOB_ATTACK_RADIUS = 50
 MOB_SEEK_FORCE = 0.1
 MOB_HIT_CHANCE = 0.05
-MOB_HIT_TIMEOUT = 1000 # ms
-MOB_SOUND_CHANCE_DETECT_PLAYER = 0.004 #random.random()
+MOB_HIT_TIMEOUT = 1000  # ms
+MOB_SOUND_CHANCE_DETECT_PLAYER = 0.004  # random.random()
 MOB_PATH_UPDATE = 3000
 MOB_SUSP_TIME = 20000
-MOB_WANDER_TIME = 3000 #ms
-MOB_NEARBY_DIST = 5000 #pixels
+MOB_WANDER_TIME = 3000  # ms
+MOB_NEARBY_DIST = 5000  # pixels
 
 # Weapon Settings
 BULLET_IMG = 'bulletBeige.png'
-WEAPONS = {'pistol':{'name': 'pistol',
-                     'bullet_speed': 3000,
-                     'bullet_lifetime': 1000,
-                     'rate': 500,
-                     'recoil': 50,
-                     'reload_time': 1500,
-                     'capacity': 12,
-                     'spread': 3,
-                     'damage': 30,
-                     'bullet_size': 'lg',
-                     'bullet_count': 1,
-                     #'sound': ['gun/pistol.wav']
+WEAPONS = {'pistol': {'name': 'pistol',
+                      'bullet_speed': 3000,
+                    'bullet_lifetime': 1000,
+                    'rate': 500,
+                    'recoil': 50,
+                    'reload_time': 1500,
+                    'capacity': 12,
+                    'spread': 3,
+                    'damage': 30,
+                    'bullet_size': 'lg',
+                    'bullet_count': 1,
+                        # 'sound': ['gun/pistol.wav']
                      },
-           'shotgun':{'name':'shotgun',
+           'shotgun': {'name': 'shotgun',
                       'bullet_speed': 3000,
                      'bullet_lifetime': 1000,
                      'rate': 900,
@@ -100,8 +100,8 @@ WEAPONS = {'pistol':{'name': 'pistol',
 MUZZLE_SMOKE = ['whitePuff15.png', 'whitePuff16.png', 'whitePuff17.png','whitePuff18.png']
 SMOKE_DURATION = 40
 SPLAT = 'splat green.png'
-DAMAGE_ALPHA = [i for i in range(0,255,55)]
-NIGHT_COLOUR = (50,50,50)
+DAMAGE_ALPHA = [i for i in range(0, 255, 55)]
+NIGHT_COLOUR = (50, 50, 50)
 LIGHT_RADIUS = (500, 500)
 LIGHT_MASK = "light_350_soft.png"
 
@@ -116,7 +116,7 @@ ITEMS_LAYER = 1
 # Items
 ITEM_IMAGES = {'health': 'health_pack.png',
                'shotgun': 'obj_shotgun.png',
-               'pistol': 'pistol.png'} #in images folder
+               'pistol': 'pistol.png'}  # in images folder
 HEALTH_PACK_AMOUNT = 100
 BOB_RANGE = 15
 BOB_SPEED = 0.5
