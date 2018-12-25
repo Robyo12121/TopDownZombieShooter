@@ -45,11 +45,12 @@ class Idle(State):
     def __init__(self, game, mob):
         self.mob = mob
         self.game = game
+        self.logger = logging.getLogger('game.Game.Idle')
 
     def enter(self):
-        self.mob.speed = choice(MOB_WANDER_SPEEDS)
+        self.mob.speed = choice(MOB_IDLE_SPEEDS)
         self.mob.detect_radius = MOB_DETECT_BASE + int(self.game.player.vel.length() * MOB_DETECT_MOD)
-        logger.info("Idle detect radius: {}".format(self.mob.detect_radius))
+        self.logger.info(f"ETR IDLE: Idle detect radius: {self.mob.detect_radius}, speed: {self.mob.speed}")
 
     def execute(self):
         # Chance to play idle sound every few seconds
@@ -58,6 +59,8 @@ class Idle(State):
         self.mob.detect_radius = MOB_DETECT_BASE + int(self.game.player.vel.length() * MOB_DETECT_MOD)
         if self.mob.test_for_player(self.game.player):
             self.mob.SM.change_state(Aggro(self.game, self.mob))
+        else:
+            self.mob.wander()
 
     def exit(self):
         pass
@@ -67,12 +70,13 @@ class Aggro(State):
     def __init__(self, game, mob):
         self.mob = mob
         self.game = game
+        self.logger = logging.getLogger('game.Game.Aggro')
 
     def enter(self):
         self.mob.speed = choice(MOB_SPRINT_SPEEDS)
         self.mob.alerted = True
         self.mob.detect_radius = MOB_LOSE_DETECT
-        logger.info("Aggro detect radius: {}".format(self.mob.detect_radius))
+        self.logger.info("Aggro detect radius: {}".format(self.mob.detect_radius))
 
         if isinstance(self.mob.SM.previous_state, Idle) or isinstance(self.mob.SM.previous_state, Suspicious):
             choice(self.game.zombie_moan_sounds).play()
@@ -93,18 +97,19 @@ class Suspicious(State):
     def __init__(self, game, mob):
         self.mob = mob
         self.game = game
+        self.logger = logging.getLogger('game.Game.Suspicious')
 
     def enter(self):
         self.mob.speed = choice(MOB_SPRINT_SPEEDS)
         self.detect_radius = MOB_DETECT_BASE + int(self.game.player.vel.length() * MOB_DETECT_MOD)
-        logger.info("Suspicious detect radius: {}".format(self.mob.detect_radius))
+        self.logger.info("Suspicious detect radius: {}".format(self.mob.detect_radius))
         self.mob.last_known = vec2int(self.game.player.pos)
         self.mob.first = False
         # Assuming always coming from Aggro state.
         self.time_since_aggro = pg.time.get_ticks()
 
     def execute(self):
-        # Check that timer hasn't expired. 
+        # Check that timer hasn't expired
         now = pg.time.get_ticks()
         if now - self.time_since_aggro > MOB_SUSP_TIME:
             self.mob.SM.change_state(Idle(self.game, self.mob))

@@ -46,55 +46,56 @@ WALL_IMG = 'tileGreen_39.png'
 
 # Mob
 MOB_IMG = 'zombie1_hold.png'
-MOB_SPRINT_SPEEDS = [200, 150, 175, 100, 125, 150, 150, 300, 300]
-MOB_WANDER_SPEEDS = [50, 20, 60, 40, 30]
-MOB_HIT_RECT = pg.Rect(0, 0, 30, 30)
-MOB_HEALTH = 100
-MOB_DAMAGE = 2
-MOB_KNOCKBACK = 20
-AVOID_RADIUS = 50
+MOB_SPRINT_SPEEDS = [200, 150, 175, 100, 125, 150, 150, 300, 300]  # Speeds mob can use while chasing player
+MOB_WANDER_SPEEDS = [50, 20, 60, 40, 30]  # Different speeds mob can move while in wandering state
+MOB_IDLE_SPEEDS = [1]  # Speeds mobs can move it while in Idle state
+MOB_HIT_RECT = pg.Rect(0, 0, 30, 30)  # Mobs hit box
+MOB_HEALTH = 100  # Amount of health points mob has
+MOB_DAMAGE = 2  # Amount of damage mob will do on each strike
+MOB_KNOCKBACK = 20  # Distance mob will be knocked back after being hit
+MOB_AVOID_RADIUS = 50  # Radius around which mob will move away from nearby mobs
 MOB_DETECT_BASE = 100
-MOB_FOV = 60
+MOB_FOV = 60  # Unused
 MOB_LOSE_DETECT = 400
-MOB_DETECT_MOD = 0.75
-MOB_ATTACK_RADIUS = 50
-MOB_SEEK_FORCE = 0.1
-MOB_HIT_CHANCE = 0.05
-MOB_HIT_TIMEOUT = 1000  # ms
-MOB_SOUND_CHANCE_DETECT_PLAYER = 0.004  # random.random()
+MOB_DETECT_MOD = 0.75  # 
+MOB_ATTACK_RADIUS = 50  # Radius in which mob can strike a target
+MOB_SEEK_FORCE = 0.1  # How strongly mob will turn to face target point
+MOB_HIT_CHANCE = 0.05  # Hit chance of any given strike 
+MOB_HIT_TIMEOUT = 1000  # How long the mob must wait before hitting player again, assuming in range
+MOB_SOUND_CHANCE_DETECT_PLAYER = 0.004  # Chance to play a sound aggro sound while player is detected
 MOB_PATH_UPDATE = 3000
-MOB_SUSP_TIME = 20000
-MOB_WANDER_TIME = 3000  # ms
-MOB_NEARBY_DIST = 5000  # pixels
+MOB_SUSP_TIME = 20000  # Time to stay in suspicious state after losing player
+MOB_WANDER_TIME = 6000  # Time between choosing a new nearby point to wander to
+MOB_NEARBY_DIST = 5000  # pixels - distance under which a mob has arrived at its target
 
 # Weapon Settings
 BULLET_IMG = 'bulletBeige.png'
 WEAPONS = {'pistol': {'name': 'pistol',
                       'bullet_speed': 3000,
-                    'bullet_lifetime': 1000,
-                    'rate': 500,
-                    'recoil': 50,
-                    'reload_time': 1500,
-                    'capacity': 12,
-                    'spread': 3,
-                    'damage': 30,
-                    'bullet_size': 'lg',
-                    'bullet_count': 1,
-                        # 'sound': ['gun/pistol.wav']
-                     },
+                      'bullet_lifetime': 1000,
+                      'rate': 500,
+                      'recoil': 50,
+                      'reload_time': 1500,
+                      'capacity': 12,
+                      'spread': 3,
+                      'damage': 30,
+                      'bullet_size': 'lg',
+                      'bullet_count': 1,
+                      # 'sound': ['gun/pistol.wav']
+                      },
            'shotgun': {'name': 'shotgun',
-                      'bullet_speed': 3000,
-                     'bullet_lifetime': 1000,
-                     'rate': 900,
-                     'recoil': 200,
-                     'reload_time': 1500,
-                     'capacity': 6,
-                     'spread': 8,
-                     'damage': 5,
-                     'bullet_size': 'lg',
-                     'bullet_count': 12,
-                     #'sound': ['gun/shotgun.wav']
-                      }
+                       'bullet_speed': 3000,
+                       'bullet_lifetime': 1000,
+                       'rate': 900,
+                       'recoil': 200,
+                       'reload_time': 1500,
+                       'capacity': 6,
+                       'spread': 8,
+                       'damage': 5,
+                       'bullet_size': 'lg',
+                       'bullet_count': 12,
+                       # 'sound': ['gun/shotgun.wav']
+                       }
            }
 # Effects
 MUZZLE_SMOKE = ['whitePuff15.png', 'whitePuff16.png', 'whitePuff17.png','whitePuff18.png']

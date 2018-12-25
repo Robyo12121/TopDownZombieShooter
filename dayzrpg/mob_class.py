@@ -8,14 +8,14 @@ import AI
 import logging
 
 vec = pg.math.Vector2
-logger = logging.getLogger(__name__)
-logger.debug(f"logging from {__name__}")
+logger = logging.getLogger('game.Game.mob_class')
+logger.debug(f"logging from game.Game.mob_class")
 
 
 class Mob(pg.sprite.Sprite, BaseGameEntity):
     def __init__(self, game, x, y):
         BaseGameEntity.__init__(self)
-        self.logger = logging.getLogger(__name__)
+        self.logger = logging.getLogger('game.Game.Mob')
         self.logger.debug("Creating mob")
         self._layer = MOB_LAYER
         self.groups = game.all_sprites, game.mobs
@@ -85,7 +85,6 @@ class Mob(pg.sprite.Sprite, BaseGameEntity):
             self.target = self.get_rand_nearby_point()
 
         if now - self.last_wander > MOB_WANDER_TIME:
-            logging.info("performing wander...")
             self.last_wander = now
             self.target = self.get_rand_nearby_point()
 
@@ -107,14 +106,14 @@ class Mob(pg.sprite.Sprite, BaseGameEntity):
         """Accepts a position """
         assert isinstance(target, vec)
         target_vec = target - self.pos  # vector from first pos to target pos
-        self.rot = target_vec.angle_to(vec(1, 0))  # get angle between current target and 'east'. why though?
+        self.rot = target_vec.angle_to(vec(1, 0))  # get angle between current target and 'east'.
         self.image = pg.transform.rotate(self.game.mob_img, self.rot)
 
     def avoid_mobs(self):
         for mob in self.game.mobs:
             if mob != self:
                 dist = self.pos - mob.pos  # away from other mob
-                if 0 < dist.length() < AVOID_RADIUS:
+                if 0 < dist.length() < MOB_AVOID_RADIUS:
                     self.acc += dist.normalize()
 
     def seek(self, target):

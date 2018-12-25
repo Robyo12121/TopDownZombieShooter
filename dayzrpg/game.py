@@ -62,7 +62,7 @@ def draw_player_stats(surf, x, y, pct, col=None):
 
 class Game:
     def __init__(self):
-        self.logger = logging.getLogger(f"{__name__}.Game")
+        self.logger = logging.getLogger(f"game.Game")
         self.logger.debug("Initializing game object")
         pg.mixer.pre_init(44100, -16, 1, 1024)  # increase sound buffer to minise lag when playing sounds
         pg.init()
@@ -402,7 +402,7 @@ class Game:
 
 if __name__ == '__main__':
     # create the game object
-    logger = setup_logger(__name__)
+    logger = setup_logger('game')
     logger.debug("Starting Game")
     g = Game()
     g.show_start_screen()
