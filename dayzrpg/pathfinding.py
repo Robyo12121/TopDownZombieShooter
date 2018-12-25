@@ -203,7 +203,7 @@ def reconstruct_path(came_from, start, goal):
 
 
 def load():
-    icon_dir = path.join(path.dirname(__file__), '.\icons')
+    icon_dir = path.join(path.dirname(__file__), './icons')
     home_img = pg.image.load(path.join(icon_dir, 'home1.png')).convert_alpha()
     home_img = pg.transform.scale(home_img, (50, 50))
     home_img.fill((0, 255, 0, 255), special_flags=pg.BLEND_RGBA_MULT)

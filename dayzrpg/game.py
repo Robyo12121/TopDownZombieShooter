@@ -374,7 +374,7 @@ class Game:
     def show_go_screen(self):
         self.screen.fill(BLACK)
         pg.mixer.fadeout(5000)
-        self.draw_text("GAME OVER", self.title_font, 180, RED, WIDTH/2, HEIGHT/2, align='center')
+        self.draw_text("GAME OVER", self.title_font, 180, RED, WIDTH / 2, HEIGHT / 2, align='center')
         self.draw_text("Press any key to start", self.title_font, 75, WHITE, WIDTH / 2, HEIGHT * 3 / 4, align='center')
         pg.display.flip()
         self.wait_for_key()
