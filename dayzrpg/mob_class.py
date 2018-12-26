@@ -79,15 +79,22 @@ class Mob(pg.sprite.Sprite, BaseGameEntity):
         else:
             return True
 
-    def wander(self):
+    def wander(self, wander_speed=choice(MOB_WANDER_SPEEDS), target_change_time=MOB_WANDER_TIME):
         now = pg.time.get_ticks()
         if self.target is None:
             self.target = self.get_rand_nearby_point()
 
+<<<<<<< HEAD
         if now - self.last_wander > MOB_WANDER_TIME:
+=======
+        if now - self.last_wander > target_change_time:
+            self.logger.info("performing wander...")
+>>>>>>> zombies now don't rapidly change directions when approaching target
             self.last_wander = now
             self.target = self.get_rand_nearby_point()
 
+        if self.reached_target(self.target):
+            self.vec = vec(0,0)
         else:
             self.move_to_target(self.target)
 
@@ -96,11 +103,19 @@ class Mob(pg.sprite.Sprite, BaseGameEntity):
         # stop for a few seconds
         # repeat
 
+    def reached_target(self, target):
+        assert isinstance(target, vec)
+        dist = self.pos - target
+        if dist.length_squared() <= MOB_NEARBY_DIST:
+            return True
+        else:
+            return False
+
     def get_rand_nearby_point(self):
         del_x = uniform(-self.detect_radius, self.detect_radius)
         del_y = uniform(-self.detect_radius, self.detect_radius)
         offset = vec(del_x, del_y)
-        return self.pos + offset
+        return self.pos + offset * 2
 
     def face_target(self, target):
         """Accepts a position """

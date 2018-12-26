@@ -60,7 +60,11 @@ class Idle(State):
         if self.mob.test_for_player(self.game.player):
             self.mob.SM.change_state(Aggro(self.game, self.mob))
         else:
+<<<<<<< HEAD
             self.mob.wander()
+=======
+            self.mob.wander(wander_speed=1, target_change_time=MOB_WANDER_TIME * 3)
+>>>>>>> zombies now don't rapidly change directions when approaching target
 
     def exit(self):
         pass
