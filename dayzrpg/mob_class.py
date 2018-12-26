@@ -81,43 +81,23 @@ class Mob(pg.sprite.Sprite, BaseGameEntity):
 
     def wander(self, wander_speed=choice(MOB_WANDER_SPEEDS), target_change_time=MOB_WANDER_TIME):
         now = pg.time.get_ticks()
-        self.logger.info(f"wandering {wander_speed}, target_change_time: {target_change_time}")
         if self.target is None:
             self.target = self.get_rand_nearby_point()
-            self.logger.info(f"No Target. Getting point")
 
-<<<<<<< HEAD
-        if now - self.last_wander > MOB_WANDER_TIME:
-=======
         if now - self.last_wander > target_change_time:
-<<<<<<< HEAD
             self.logger.info("performing wander...")
->>>>>>> zombies now don't rapidly change directions when approaching target
-=======
-            self.logger.info("new wander")
->>>>>>> changed wander function and zombie idle state
             self.last_wander = now
             self.target = self.get_rand_nearby_point()
 
-        if self.reached_target(self.target):
-            self.logger.info(f"Target reached. Stopping.")
+        if self.arrived(self.target):
             self.vec = vec(0, 0)
         else:
-            self.logger.info(f"moving to target")
             self.move_to_target(self.target)
 
         # pg.draw.line(self.image, RED, self.pos, self.target, 7)
         # move that way for a few seconds
         # stop for a few seconds
         # repeat
-
-    def reached_target(self, target):
-        assert isinstance(target, vec)
-        dist = self.pos - target
-        if dist.length_squared() <= MOB_NEARBY_DIST:
-            return True
-        else:
-            return False
 
     def get_rand_nearby_point(self):
         del_x = uniform(-self.detect_radius, self.detect_radius)

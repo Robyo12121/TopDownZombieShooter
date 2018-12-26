@@ -60,7 +60,7 @@ class Idle(State):
         if self.mob.test_for_player(self.game.player):
             self.mob.SM.change_state(Aggro(self.game, self.mob))
         else:
-            self.mob.wander(wander_speed=choice([0, 1]), target_change_time=MOB_WANDER_TIME * 3)
+            self.mob.wander(wander_speed=1, target_change_time=MOB_WANDER_TIME * 3)
 
     def exit(self):
         pass
