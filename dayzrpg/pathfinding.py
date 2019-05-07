@@ -1,5 +1,4 @@
 import pygame as pg
-from os import path
 import heapq
 from collections import deque
 
@@ -123,7 +122,7 @@ def dijkstra_search(graph, start, goal):
         for next in graph.find_neighbors(vec(current)):  # l
             next = vec2int(next)
             new_cost = cost_so_far[current] + graph.cost(current, next)  # calc current cost plus cost of next square
-            if next not in cost_so_far or new_cost < cost[next]:  # if we haven't looked at it before or we have and it had a lower cost then
+            if next not in cost_so_far or new_cost < cost_so_far[next]:  # if we haven't looked at it before or we have and it had a lower cost then
                 cost_so_far[next] = new_cost  # update values
                 priority = new_cost
                 frontier.put(next, priority)
@@ -193,7 +192,7 @@ def breadth_first_search(graph, start, end):
 
 def reconstruct_path(came_from, start, goal):
     current = goal
-    path =[]
+    path = []
     while current != start:
         path.append(current)
         current = came_from[vec2int(current)]
@@ -286,13 +285,13 @@ if __name__ == '__main__':
         g.draw()
         # Draw path from start to goal
         current = start  # + path[vec2int(start)]
-        l = 0
+        path_length = 0
         while current != goal:
             v = path[(current.x, current.y)]
             if v.length_squared() == 1:
-                l += 10
+                path_length += 10
             else:
-                l += 14
+                path_length += 14
             img = arrows[vec2int(v)]
             x = current.x * TILESIZE + TILESIZE / 2
             y = current.y * TILESIZE + TILESIZE / 2
@@ -303,5 +302,5 @@ if __name__ == '__main__':
 
         draw_icons(images['home'], images['cross'])
         draw_text(search_type.__name__, 30, GREEN, WIDTH - 10, HEIGHT - 10, align="bottomright")
-        draw_text('Path length:{}'.format(l), 30, GREEN, WIDTH - 10, HEIGHT - 45, align="bottomright")
+        draw_text('Path length:{}'.format(path_length), 30, GREEN, WIDTH - 10, HEIGHT - 45, align="bottomright")
         pg.display.flip()

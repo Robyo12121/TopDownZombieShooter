@@ -1,9 +1,9 @@
 import pygame as pg
 # from sprites import BaseGameEntity
 from sprites import collide_with_walls
-from settings import *
 from random import choice, uniform, random, randint
 from itertools import chain
+import settings
 
 vec = pg.math.Vector2
 
@@ -12,7 +12,7 @@ class Player(pg.sprite.Sprite):
     # Note passing the sprite a copy of the game.
     #  This player constructor is called in game class
     def __init__(self, game, x, y):  # x and y are grid coords not pixels
-        self._layer = PLAYER_LAYER  # Must be called before sprite.Sprite.__init__()
+        self._layer = settings.PLAYER_LAYER  # Must be called before sprite.Sprite.__init__()
         self.groups = game.all_sprites
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
@@ -21,17 +21,17 @@ class Player(pg.sprite.Sprite):
         # self.image = game.player_img
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
-        self.hit_rect = PLAYER_HIT_RECT
+        self.hit_rect = settings.PLAYER_HIT_RECT
         self.hit_rect.center = self.rect.center  # Center of hit box always same as image rect
         self.vel = vec(0, 0)
         self.pos = vec(x, y)
-        self.grid_pos = (self.pos.x // TILESIZE, self.pos.y // TILESIZE)
+        self.grid_pos = (self.pos.x // settings.TILESIZE, self.pos.y // settings.TILESIZE)
         self.rot = 0
         self.rot_speed = 0
         # STATS
         self.damaged = False
-        self.fatigue = PLAYER_FATIGUE
-        self.health = PLAYER_HEALTH
+        self.fatigue = settings.PLAYER_FATIGUE
+        self.health = settings.PLAYER_HEALTH
         self.infected = False
         self.last_drop = 0  # for dropping health every few seconds due to infection
         # INFO
@@ -53,34 +53,34 @@ class Player(pg.sprite.Sprite):
         # MOVEMENT
         # Turning
         if (keys[pg.K_LEFT] or keys[pg.K_a]):
-            self.vel = vec(PLAYER_WALK_SPEED, 0).rotate(self.rot - 90)
+            self.vel = vec(settings.PLAYER_WALK_SPEED, 0).rotate(self.rot - 90)
         if keys[pg.K_RIGHT] or keys[pg.K_d]:
-            self.vel = vec(PLAYER_WALK_SPEED, 0).rotate(self.rot + 90)
+            self.vel = vec(settings.PLAYER_WALK_SPEED, 0).rotate(self.rot + 90)
         # Moving
         if keys[pg.K_UP] or keys[pg.K_w]:
             # Sprinting
             if keys[pg.K_LSHIFT]:
                 # Have fatigue
                 if self.fatigue > 100:
-                    self.vel = vec(PLAYER_SPRINT_SPEED, 0).rotate(-self.rot)
-                    self.fatigue -= PLAYER_FATIGUE_RATE
+                    self.vel = vec(settings.PLAYER_SPRINT_SPEED, 0).rotate(-self.rot)
+                    self.fatigue -= settings.PLAYER_FATIGUE_RATE
                 # No fatigue
                 else:
-                    self.vel = vec(PLAYER_NORMAL_SPEED, 0).rotate(-self.rot)
+                    self.vel = vec(settings.PLAYER_NORMAL_SPEED, 0).rotate(-self.rot)
             # Walking (stealthing)
             elif keys[pg.K_LCTRL]:
-                self.vel = vec(PLAYER_WALK_SPEED, 0).rotate(-self.rot)
-                self.fatigue += PLAYER_FATIGUE_REGEN_WALKING
+                self.vel = vec(settings.PLAYER_WALK_SPEED, 0).rotate(-self.rot)
+                self.fatigue += settings.PLAYER_FATIGUE_REGEN_WALKING
             # Jogging (normal)
             else:
-                self.vel = vec(PLAYER_NORMAL_SPEED, 0).rotate(-self.rot)
-                self.fatigue += PLAYER_FATIGUE_REGEN_NORMAL
+                self.vel = vec(settings.PLAYER_NORMAL_SPEED, 0).rotate(-self.rot)
+                self.fatigue += settings.PLAYER_FATIGUE_REGEN_NORMAL
         # Stationary
         if not keys[pg.K_UP] or keys[pg.K_w]:
-            self.fatigue += PLAYER_FATIGUE_REGEN_STATIONARY
+            self.fatigue += settings.PLAYER_FATIGUE_REGEN_STATIONARY
         # Walking backwards
         if keys[pg.K_DOWN] or keys[pg.K_s]:
-            self.vel = vec(-PLAYER_WALK_SPEED, 0).rotate(-self.rot)
+            self.vel = vec(-settings.PLAYER_WALK_SPEED, 0).rotate(-self.rot)
 
     def shoot(self):
         if not self.weapon:
@@ -91,7 +91,7 @@ class Player(pg.sprite.Sprite):
                 choice(self.game.weapon_sounds[self.weapon.data['name']]).play()
                 self.last_shot = now
                 direction = vec(1, 0).rotate(-self.rot)
-                pos = self.pos + BARREL_OFFSET.rotate(-self.rot)
+                pos = self.pos + settings.BARREL_OFFSET.rotate(-self.rot)
                 self.vel = vec(-self.weapon.data['recoil'], 0).rotate(-self.rot)
                 for i in range(self.weapon.data['bullet_count']):
                     spread = uniform(-self.weapon.data['spread'], self.weapon.data['spread'])
@@ -156,11 +156,11 @@ class Player(pg.sprite.Sprite):
         if weapon in self.items['ammo']:  # Already have some of that ammo?
             # print("Have some of that ammo already")
             # Add more ammo
-            self.items['ammo'][weapon] += WEAPONS[weapon]['capacity']
+            self.items['ammo'][weapon] += settings.WEAPONS[weapon]['capacity']
         else:  # Don't already have some of that ammo
             # print("New ammo type")
             # Add a mag's worth to inventory
-            self.items['ammo'][weapon] = WEAPONS[weapon]['capacity']
+            self.items['ammo'][weapon] = settings.WEAPONS[weapon]['capacity']
 
     def cycle_weapon(self):
         # print("Inventory: {}".format(self.items['weapons'].keys()))
@@ -195,15 +195,15 @@ class Player(pg.sprite.Sprite):
 
     def got_hit(self):
         self.damaged = True
-        self.health -= MOB_DAMAGE
-        self.damage_alpha = chain(DAMAGE_ALPHA * 2)  # Flashing damage - happens twice
-        if self.health < 0.6 * PLAYER_HEALTH and random() < PLAYER_INFECTION_CHANCE:  # random() between 0.0 and 1.0
+        self.health -= settings.MOB_DAMAGE
+        self.damage_alpha = chain(settings.DAMAGE_ALPHA * 2)  # Flashing damage - happens twice
+        if self.health < 0.6 * settings.PLAYER_HEALTH and random() < settings.PLAYER_INFECTION_CHANCE:  # random() between 0.0 and 1.0
             self.infected = True
 
     def update(self):
         self.get_keys()  # uses pg.key.get_pressed()
-        if self.fatigue > PLAYER_FATIGUE:
-            self.fatigue = PLAYER_FATIGUE
+        if self.fatigue > settings.PLAYER_FATIGUE:
+            self.fatigue = settings.PLAYER_FATIGUE
         elif self.fatigue < 0:
             self.fatigue = 0
         self.look_cursor()
@@ -216,7 +216,7 @@ class Player(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = self.pos
         self.pos += self.vel * self.game.dt
-        self.grid_pos = (self.pos.x // TILESIZE, self.pos.y // TILESIZE)
+        self.grid_pos = (self.pos.x // settings.TILESIZE, self.pos.y // settings.TILESIZE)
         self.hit_rect.centerx = self.pos.x
         collide_with_walls(self, self.game.walls, 'x')
         self.hit_rect.centery = self.pos.y
@@ -226,14 +226,14 @@ class Player(pg.sprite.Sprite):
         if self.infected:
             print("INFECTED. HEALTH: {}".format(self.health))
             now = pg.time.get_ticks()
-            if now - self.last_drop > PLAYER_INFECTION_INTERVAL:
+            if now - self.last_drop > settings.PLAYER_INFECTION_INTERVAL:
                 self.last_drop = now
-                self.health -= PLAYER_INFECTION_AMOUNT
+                self.health -= settings.PLAYER_INFECTION_AMOUNT
 
-        if self.health / PLAYER_HEALTH <= 0.6:
+        if self.health / settings.PLAYER_HEALTH <= 0.6:
             if random() < 0.002:
                 choice(self.game.player_pain_sounds).play()
-        if self.health / PLAYER_HEALTH <= 0.3:
+        if self.health / settings.PLAYER_HEALTH <= 0.3:
             if random() < 0.001:
                 choice(self.game.player_panic_sounds).play()
         if self.health <= 0:
@@ -242,13 +242,13 @@ class Player(pg.sprite.Sprite):
     def add_health(self, amount):
         self.infected = False
         self.health += amount
-        if self.health >= PLAYER_HEALTH:
-            self.health = PLAYER_HEALTH
+        if self.health >= settings.PLAYER_HEALTH:
+            self.health = settings.PLAYER_HEALTH
 
 
 class Gun(object):
     def __init__(self, gun_str):
-        self.data = WEAPONS[gun_str]
+        self.data = settings.WEAPONS[gun_str]
         self.name = self.data['name']
         # self.remaining_shots = self.data['capacity']
         self.remaining_shots = 0
@@ -281,7 +281,7 @@ class Gun(object):
 
 class MuzzleSmoke(pg.sprite.Sprite):
     def __init__(self, game, pos):
-        self._layer = EFFECTS_LAYER
+        self._layer = settings.EFFECTS_LAYER
         self.groups = game.all_sprites
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
@@ -294,13 +294,13 @@ class MuzzleSmoke(pg.sprite.Sprite):
         self.spawn_time = pg.time.get_ticks()
 
     def update(self):
-        if pg.time.get_ticks() - self.spawn_time > SMOKE_DURATION:
+        if pg.time.get_ticks() - self.spawn_time > settings.SMOKE_DURATION:
             self.kill()
 
 
 class Bullet(pg.sprite.Sprite):
     def __init__(self, game, pos, direction, damage):
-        self._layer = BULLET_LAYER
+        self._layer = settings.BULLET_LAYER
         self.groups = game.all_sprites, game.bullets
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game

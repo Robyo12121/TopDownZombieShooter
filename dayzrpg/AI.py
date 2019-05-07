@@ -21,7 +21,7 @@ class BaseGameEntity(object):
 #        self.active_entities = {}
 #        # Active entities stored as string name in dict - is there a better way?
 #        # Entities don't have numerical id's - identified by their name currently
-       
+
 #    def add_entity(self, entity):
 #        self.active_entities[entity.name] = entity
 

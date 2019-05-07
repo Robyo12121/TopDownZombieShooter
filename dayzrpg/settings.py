@@ -57,10 +57,10 @@ MOB_AVOID_RADIUS = 50  # Radius around which mob will move away from nearby mobs
 MOB_DETECT_BASE = 100
 MOB_FOV = 60  # Unused
 MOB_LOSE_DETECT = 400
-MOB_DETECT_MOD = 0.75  # 
+MOB_DETECT_MOD = 0.75  #
 MOB_ATTACK_RADIUS = 50  # Radius in which mob can strike a target
 MOB_SEEK_FORCE = 0.1  # How strongly mob will turn to face target point
-MOB_HIT_CHANCE = 0.05  # Hit chance of any given strike 
+MOB_HIT_CHANCE = 0.05  # Hit chance of any given strike
 MOB_HIT_TIMEOUT = 1000  # How long the mob must wait before hitting player again, assuming in range
 MOB_SOUND_CHANCE_DETECT_PLAYER = 0.004  # Chance to play a sound aggro sound while player is detected
 MOB_PATH_UPDATE = 3000
@@ -98,7 +98,7 @@ WEAPONS = {'pistol': {'name': 'pistol',
                        }
            }
 # Effects
-MUZZLE_SMOKE = ['whitePuff15.png', 'whitePuff16.png', 'whitePuff17.png','whitePuff18.png']
+MUZZLE_SMOKE = ['whitePuff15.png', 'whitePuff16.png', 'whitePuff17.png', 'whitePuff18.png']
 SMOKE_DURATION = 40
 SPLAT = 'splat green.png'
 DAMAGE_ALPHA = [i for i in range(0, 255, 55)]
@@ -124,34 +124,34 @@ BOB_SPEED = 0.5
 
 # Sounds
 DEATH_SCREEN_MUSIC = []
-BG_MUSIC = ['samples/stinger_0.ogg','samples/stinger_1.ogg','samples/suspense_0.ogg',
-                      'samples/suspense_1.ogg','samples/suspense_2.ogg','samples/suspense_3.ogg',
-                      'samples/suspense_4.ogg','samples/suspense_5.ogg','samples/suspense_6.ogg',
-                      'samples/suspense_7.ogg','samples/suspense_8.ogg','samples/suspense_9.ogg',
-                      'samples/suspense_10.ogg','samples/suspense_11.ogg','samples/suspense_12.ogg',
-                      'samples/suspense_13.ogg','samples/suspense_14.ogg','samples/suspense_15.ogg',
-                      'samples/suspense_16.ogg','samples/suspense_17.ogg','samples/suspense_18.ogg',
-                      'samples/suspense_19.ogg','samples/suspense_20.ogg','samples/suspense_21.ogg',
-                      'samples/suspense_22.ogg','samples/suspense_23.ogg','samples/suspense_24.ogg',
-                      'samples/suspense_25.ogg','samples/suspense_26.ogg','samples/suspense_27.ogg',
-                      'samples/suspense_28.ogg','samples/suspense_29.ogg','samples/suspense_30.ogg',
-                      'samples/suspense_31.ogg','samples/suspense_32.ogg','samples/suspense_33.ogg',
-                      'samples/suspense_34.ogg','samples/suspense_35.ogg','samples/suspense_36.ogg',
-                      'samples/suspense_37.ogg']
+BG_MUSIC = ['samples/stinger_0.ogg', 'samples/stinger_1.ogg', 'samples/suspense_0.ogg',
+            'samples/suspense_1.ogg', 'samples/suspense_2.ogg', 'samples/suspense_3.ogg',
+            'samples/suspense_4.ogg', 'samples/suspense_5.ogg', 'samples/suspense_6.ogg',
+            'samples/suspense_7.ogg', 'samples/suspense_8.ogg', 'samples/suspense_9.ogg',
+            'samples/suspense_10.ogg', 'samples/suspense_11.ogg', 'samples/suspense_12.ogg',
+            'samples/suspense_13.ogg', 'samples/suspense_14.ogg', 'samples/suspense_15.ogg',
+            'samples/suspense_16.ogg', 'samples/suspense_17.ogg', 'samples/suspense_18.ogg',
+            'samples/suspense_19.ogg', 'samples/suspense_20.ogg', 'samples/suspense_21.ogg',
+            'samples/suspense_22.ogg', 'samples/suspense_23.ogg', 'samples/suspense_24.ogg',
+            'samples/suspense_25.ogg', 'samples/suspense_26.ogg', 'samples/suspense_27.ogg',
+            'samples/suspense_28.ogg', 'samples/suspense_29.ogg', 'samples/suspense_30.ogg',
+            'samples/suspense_31.ogg', 'samples/suspense_32.ogg', 'samples/suspense_33.ogg',
+            'samples/suspense_34.ogg', 'samples/suspense_35.ogg', 'samples/suspense_36.ogg',
+            'samples/suspense_37.ogg']
 PLAYER_PAIN_SOUNDS = ['pain/8.wav', 'pain/9.wav', 'pain/10.wav', 'pain/11.wav']
 PLAYER_HIT_SOUNDS = ['zombie/z_hit_0.ogg', 'zombie/z_hit_1.ogg', 'zombie/z_hit_2.ogg', 'zombie/z_hit_3.ogg',
                      'zombie/z_hit_4.ogg', 'zombie/z_hit_5.ogg', 'zombie/z_hit_6.ogg']
 PLAYER_PANIC_SOUNDS = ['panic/panic_0.ogg', 'panic/panic_1.ogg']
-ZOMBIE_MOAN_SOUNDS = ['zombie/spotted_0.ogg','zombie/spotted_1.ogg','zombie/spotted_2.ogg','zombie/spotted_3.ogg',
-                      'zombie/spotted_5.ogg','zombie/spotted_6.ogg','zombie/spotted_7.ogg','zombie/spotted_8.ogg',
-                      'zombie/spotted_8.ogg','zombie/spotted_9.ogg','zombie/spotted_10.ogg','zombie/spotted_11.ogg',
-                      'zombie/spotted_12.ogg','zombie/spotted_13.ogg',]
+ZOMBIE_MOAN_SOUNDS = ['zombie/spotted_0.ogg', 'zombie/spotted_1.ogg', 'zombie/spotted_2.ogg', 'zombie/spotted_3.ogg',
+                      'zombie/spotted_5.ogg', 'zombie/spotted_6.ogg', 'zombie/spotted_7.ogg', 'zombie/spotted_8.ogg',
+                      'zombie/spotted_8.ogg', 'zombie/spotted_9.ogg', 'zombie/spotted_10.ogg', 'zombie/spotted_11.ogg',
+                      'zombie/spotted_12.ogg', 'zombie/spotted_13.ogg']
 ZOMBIE_HIT_SOUNDS = ['zombie/splat-15.wav']
-WEAPON_SOUNDS = {'pistol':['gun/pistol.wav'],
-                 'shotgun':['gun/shotgun.wav']}
+WEAPON_SOUNDS = {'pistol': ['gun/pistol.wav'],
+                 'shotgun': ['gun/shotgun.wav']}
 EFFECTS_SOUNDS = {'level_start': {'file': 'level_start.wav', 'volume': 0.1},
-                  'health_up': {'file': 'items/health_pack.wav','volume': 0.1},
-                  'gun_pickup': {'file': 'gun/gun_pickup.wav','volume': 0.1}}
+                  'health_up': {'file': 'items/health_pack.wav', 'volume': 0.1},
+                  'gun_pickup': {'file': 'gun/gun_pickup.wav', 'volume': 0.1}}
 # Sound levels
 ZOMBIE_MOAN_LEVEL = 0.4
 BG_MUSIC_LEVEL = 0.1

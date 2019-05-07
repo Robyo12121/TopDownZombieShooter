@@ -1,7 +1,7 @@
 import pygame as pg
-from settings import *
+import settings
 from tilemap import collide_hit_rect
-# from tilemap import reconstruct_path  # a_star_search, dijkstra_search, 
+# from tilemap import reconstruct_path  # a_star_search, dijkstra_search,
 # from random import uniform, choice
 import pytweening as tween
 # import pathfinding
@@ -30,9 +30,9 @@ def collide_with_walls(sprite, group, direction):
     if direction == 'x':  # checking for an x is collision
         hits = pg.sprite.spritecollide(sprite, group, False, collide_hit_rect)  # False as don't delete walls
         if hits:
-            if hits[0].rect.centerx > sprite.hit_rect.centerx:         
+            if hits[0].rect.centerx > sprite.hit_rect.centerx:
                 sprite.pos.x = hits[0].rect.left - sprite.hit_rect.width / 2  # move my x tile pos 1 tile to the left of the left edge of object we've hit
-            if hits[0].rect.centerx < sprite.hit_rect.centerx:           
+            if hits[0].rect.centerx < sprite.hit_rect.centerx:
                 sprite.pos.x = hits[0].rect.right + sprite.hit_rect.width / 2  # so move my x side up against the objects right side
             sprite.vel.x = 0                                               # and then stop moving in that direction
             sprite.hit_rect.centerx = sprite.pos.x                           # put my rectangle surface where my pos is
@@ -40,10 +40,10 @@ def collide_with_walls(sprite, group, direction):
     if direction == 'y':  # checking for y axis collision
         hits = pg.sprite.spritecollide(sprite, group, False, collide_hit_rect)
         if hits:  # if we collide with something
-            if hits[0].rect.centery > sprite.hit_rect.centery: 
+            if hits[0].rect.centery > sprite.hit_rect.centery:
                 sprite.pos.y = hits[0].rect.top - sprite.hit_rect.height / 2  # so move my y tile pos to 1 tile above it's top edge
-            if hits[0].rect.centery < sprite.hit_rect.centery: 
-                sprite.pos.y = hits[0].rect.bottom + sprite.hit_rect.height / 2  # move my y tile pos to its bottom edge  
+            if hits[0].rect.centery < sprite.hit_rect.centery:
+                sprite.pos.y = hits[0].rect.bottom + sprite.hit_rect.height / 2  # move my y tile pos to its bottom edge
             sprite.vel.y = 0
             sprite.hit_rect.centery = sprite.pos.y
 
@@ -51,7 +51,7 @@ def collide_with_walls(sprite, group, direction):
 class Obstacle(pg.sprite.Sprite):
     """Invisble collidable object that sits on top of """
     def __init__(self, game, x, y, w, h):
-        self._layer = WALL_LAYER
+        self._layer = settings.WALL_LAYER
         self.groups = game.walls
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
@@ -64,7 +64,7 @@ class Obstacle(pg.sprite.Sprite):
 
 class Item(pg.sprite.Sprite):
     def __init__(self, game, pos, item_type):
-        self._layer = ITEMS_LAYER
+        self._layer = settings.ITEMS_LAYER
         self.groups = game.all_sprites, game.items
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
@@ -81,9 +81,9 @@ class Item(pg.sprite.Sprite):
     def update(self):
         # bobbing motion
         # Every frame calc how far along in tween func
-        offset = BOB_RANGE * (self.tween(self.step/BOB_RANGE) - 0.5)  #subtract half as we start in center
+        offset = settings.BOB_RANGE * (self.tween(self.step / settings.BOB_RANGE) - 0.5)  # subtract half as we start in center
         self.rect.centery = self.pos.y + offset * self.dir
-        self.step += BOB_SPEED
-        if self.step > BOB_RANGE:
+        self.step += settings.BOB_SPEED
+        if self.step > settings.BOB_RANGE:
             self.step = 0
             self.dir *= -1

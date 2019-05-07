@@ -1,5 +1,5 @@
 import pygame as pg
-from settings import *
+import settings
 import pytmx
 from collections import deque
 import heapq
@@ -63,8 +63,8 @@ class Map:
 
         self.tilewidth = len(self.data[0])
         self.tileheight = len(self.data)
-        self.width = self.tilewidth * TILESIZE
-        self.height = self.tileheight * TILESIZE
+        self.width = self.tilewidth * settings.TILESIZE
+        self.height = self.tileheight * settings.TILESIZE
 
 
 class TiledMap:
@@ -116,7 +116,7 @@ class TiledMap:
             Filter out - out of bounds nodes and walls
             Return remaining nodes"""
         neighbors = [node + connection for connection in self.connections]
-        # don't use this for diagonals        
+        # don't use this for diagonals
         neighbors = filter(self.in_bounds, neighbors)  # Filters out a node from neighbours if not in map
         neighbors = filter(self.passable, neighbors)  # Filters out if nodes containing walls
         return neighbors
@@ -140,12 +140,12 @@ class PriorityQueue:
         return heapq.heappop(self.nodes)[1]  # only get node from queue (not cost)
 
     def empty(self):
-        return len(self.nodes) == 0 # if True stop searching
+        return len(self.nodes) == 0  # if True stop searching
 
 
 class Camera:
     def __init__(self, width, height):
-        self.camera = pg.Rect(0, 0, width, height)  # Rectangle keeps track of offset amount we need to apply to drawing the map 
+        self.camera = pg.Rect(0, 0, width, height)  # Rectangle keeps track of offset amount we need to apply to drawing the map
         self.width = width
         self.height = height
 
@@ -167,13 +167,13 @@ class Camera:
 
     def update(self, target):
         """Follow target sprite"""
-        x = -target.rect.centerx + int(WIDTH / 2)  # Set x pos of camera to minus the x movement of player - keeping player centered
-        y = -target.rect.centery + int(HEIGHT / 2)
+        x = -target.rect.centerx + int(settings.WIDTH / 2)  # Set x pos of camera to minus the x movement of player - keeping player centered
+        y = -target.rect.centery + int(settings.HEIGHT / 2)
 
         x = min(0, x)  # Prevents x from going below 0
         y = min(0, y)
-        x = max(-(self.width - WIDTH), x)  # Prevents x from going lower than 
-        y = max(-(self.height - HEIGHT), y)
+        x = max(-(self.width - settings.WIDTH), x)  # Prevents x from going lower than
+        y = max(-(self.height - settings.HEIGHT), y)
         self.camera = pg.Rect(x, y, self.width, self.height)
 
 

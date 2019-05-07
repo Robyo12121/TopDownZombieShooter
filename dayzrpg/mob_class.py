@@ -1,6 +1,6 @@
 import pygame as pg
-from settings import *
-from random import uniform, choice
+import settings
+from random import uniform, choice  # , randint
 from sprites import BaseGameEntity, collide_with_walls
 # import pathfinding
 import AI
@@ -16,27 +16,27 @@ class Mob(pg.sprite.Sprite, BaseGameEntity):
     def __init__(self, game, x, y):
         BaseGameEntity.__init__(self)
         self.logger = logging.getLogger('game.Game.Mob')
-        self.logger.debug("Creating mob")
-        self._layer = MOB_LAYER
+        self.logger.debug(f"Creating mob with id: {self.id}")
+        self._layer = settings.MOB_LAYER
         self.groups = game.all_sprites, game.mobs
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
         self.image = game.mob_img.copy()
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
-        self.hit_rect = MOB_HIT_RECT.copy()  # more than one mob
+        self.hit_rect = settings.MOB_HIT_RECT.copy()  # more than one mob
         self.hit_rect.center = self.rect.center
         self.pos = vec(x, y)
-        self.grid_pos = (self.pos.x // TILESIZE, self.pos.y // TILESIZE)
+        self.grid_pos = (self.pos.x // settings.TILESIZE, self.pos.y // settings.TILESIZE)
         self.vel = vec(0, 0)
         self.acc = vec(0, 0)  # Acceleration to delay movement speed
         self.rect.center = self.pos
         self.rot = uniform(0, 360)
         self.direction = vec(self.rot, 0).normalize
         self.image = pg.transform.rotate(self.game.mob_img, self.rot)
-        self.health = MOB_HEALTH
-        self.speed = choice(MOB_WANDER_SPEEDS)
-        self.detect_radius = MOB_DETECT_BASE
+        self.health = settings.MOB_HEALTH
+        self.speed = choice(settings.MOB_WANDER_SPEEDS)
+        self.detect_radius = settings.MOB_DETECT_BASE
         self.target = None
         self.alerted = False
         self.last_hit = 0
@@ -74,18 +74,17 @@ class Mob(pg.sprite.Sprite, BaseGameEntity):
     def arrived(self, target):
         assert isinstance(target, vec)
         target_dist = self.pos - target
-        if target_dist.length_squared() > MOB_NEARBY_DIST:
+        if target_dist.length_squared() > settings.MOB_NEARBY_DIST:
             return False
         else:
             return True
 
-    def wander(self, wander_speed=choice(MOB_WANDER_SPEEDS), target_change_time=MOB_WANDER_TIME):
+    def wander(self):
         now = pg.time.get_ticks()
         if self.target is None:
             self.target = self.get_rand_nearby_point()
 
-        if now - self.last_wander > target_change_time:
-            self.logger.info("performing wander...")
+        if now - self.last_wander > settings.MOB_WANDER_TIME:
             self.last_wander = now
             self.target = self.get_rand_nearby_point()
 
@@ -116,7 +115,7 @@ class Mob(pg.sprite.Sprite, BaseGameEntity):
         for mob in self.game.mobs:
             if mob != self:
                 dist = self.pos - mob.pos  # away from other mob
-                if 0 < dist.length() < MOB_AVOID_RADIUS:
+                if 0 < dist.length() < settings.MOB_AVOID_RADIUS:
                     self.acc += dist.normalize()
 
     def seek(self, target):
@@ -124,8 +123,8 @@ class Mob(pg.sprite.Sprite, BaseGameEntity):
         at a given speed"""
         self.desired = (target - self.pos).normalize() * self.speed
         steer = (self.desired - self.vel)
-        if steer.length() > MOB_SEEK_FORCE:
-            steer.scale_to_length(MOB_SEEK_FORCE)
+        if steer.length() > settings.MOB_SEEK_FORCE:
+            steer.scale_to_length(settings.MOB_SEEK_FORCE)
         return steer
 
     def move_to_target(self, target):
@@ -148,7 +147,7 @@ class Mob(pg.sprite.Sprite, BaseGameEntity):
         self.vel += self.acc * self.game.dt
         # Equation of motion Pos = Vt + 0.5*Acc + (t^2) ?
         self.pos += self.vel * self.game.dt + 0.5 * self.acc * self.game.dt ** 2
-        self.grid_pos = (self.pos.x // TILESIZE, self.pos.y // TILESIZE)
+        self.grid_pos = (self.pos.x // settings.TILESIZE, self.pos.y // settings.TILESIZE)
         # Mob collisions
         self.hit_rect.centerx = self.pos.x
         collide_with_walls(self, self.game.walls, 'x')
@@ -204,13 +203,13 @@ class Mob(pg.sprite.Sprite, BaseGameEntity):
         self.draw_health()
 
     def draw_health(self):
-        if self.health < MOB_HEALTH:
+        if self.health < settings.MOB_HEALTH:
             if self.health > 60:
-                col = GREEN
+                col = settings.GREEN
             elif self.health > 30:
-                col = YELLOW
+                col = settings.YELLOW
             else:
-                col = RED
-            width = int(self.rect.width * self.health / MOB_HEALTH)
+                col = settings.RED
+            width = int(self.rect.width * self.health / settings.MOB_HEALTH)
             self.health_bar = pg.Rect(0, 0, width, 7)
             pg.draw.rect(self.image, col, self.health_bar)
